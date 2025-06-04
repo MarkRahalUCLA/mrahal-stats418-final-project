@@ -1,0 +1,53 @@
+# Use R base image optimized for production
+FROM rocker/r-ver:4.2.0
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    libcurl4-openssl-dev \
+    libssl-dev \
+    libxml2-dev \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install required R packages
+RUN R -e "options(warn=2); \
+    if (!require('plumber')) install.packages('plumber'); \
+    if (!require('httr')) install.packages('httr'); \
+    if (!require('jsonlite')) install.packages('jsonlite'); \
+    if (!require('forecast')) install.packages('forecast'); \
+    if (!require('tidyverse')) install.packages('tidyverse'); \
+    if (!require('lubridate')) install.packages('lubridate'); \
+    if (!require('memoise')) install.packages('memoise'); \
+    if (!require('base64enc')) install.packages('base64enc'); \
+    if (!require('ggplot2')) install.packages('ggplot2'); \
+    if (!require('scales')) install.packages('scales')"
+
+# Create app directory
+WORKDIR /app
+
+# Copy only the necessary files for the API
+COPY api.R /app/
+COPY model.R /app/
+
+# Create cache directory with proper permissions
+ENV CACHE_DIR=/workspace/cache
+RUN mkdir -p $CACHE_DIR && \
+    chmod -R 777 /workspace
+
+# Set environment variables
+ENV PORT=8080
+ENV TZ=UTC
+
+# Set non-root user for security
+RUN useradd -r -u 1001 -g root plumber
+USER 1001
+
+# Expose the port that plumber will run on
+EXPOSE 8080
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s \
+    CMD curl -f http://localhost:8080/health || exit 1
+
+# Start the plumber API
+ENTRYPOINT ["R", "-e", "pr <- plumber::plumb('api.R'); pr$run(host='0.0.0.0', port=8080)"] 

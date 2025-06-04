@@ -1,0 +1,10 @@
+name: co2-prediction-app
+title:
+username: mrahalucla
+account: mrahalucla
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 14868763
+bundleId: 10385450
+url: https://mrahalucla.shinyapps.io/co2-prediction-app/
+version: 1
