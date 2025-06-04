@@ -1,6 +1,6 @@
 # CO2 Concentration Prediction App
 
-This Shiny application provides an interactive interface for analyzing and predicting atmospheric CO2 concentrations using historical data and advanced time series modeling.
+This Shiny application provides an interactive interface for analyzing and predicting atmospheric CO2 concentrations using historical data and time series modeling.
 
 ## Table of Contents
 - [Exploratory Data Analysis](#exploratory-data-analysis)
@@ -106,13 +106,3 @@ The underlying model is a relatively simple approach. It includes:
 ### Performance Metrics
 - High accuracy for short-term predictions
 - Decently fast API responses
-
-
-
-### Using R/Rstudio to run the application
-The application script actually references the API URL from the Google Cloud Run server. To change this:
-1. Open app.R in some IDE
-2. Locate the `api_base_url` declaration on line 13
-3. Change the value passed in to `httop://localhost:8080`
-4. Run the app (make sure the API is running first)
-
