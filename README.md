@@ -24,7 +24,7 @@ The application performs a predictive analysis of CO2 concentration data.
 ### Data Characteristics
 - Unit of measurement: Parts per million (ppm)
 - `cycle`: The concentration value read as-is for that day
-= `trend`: The concentration value after accounting for seasonal variation. This is the value used in the predictive model.
+- `trend`: The concentration value after accounting for seasonal variation. This is the value used in the predictive model.
 
 ## Methodology
 
